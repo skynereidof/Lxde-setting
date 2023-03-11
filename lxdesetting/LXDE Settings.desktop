@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Lxde setting
+Exec=/usr/bin/python3 /home/snereid/Desktop/lxdesetting/setting.py
+Terminal=false
+Type=Application
+Categories=GTK;Settings;DesktopSettings;X-LXDE-Settings;
+Path=/home/snereid/Desktop
+GenericName=Lxde Settings
+Icon=preferences-desktop
