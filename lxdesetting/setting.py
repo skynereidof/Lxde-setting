@@ -17,7 +17,14 @@ applications = [
     {'name': 'Gparted', 'command': 'gparted'},
     {'name': 'Nitrogen', 'command': 'nitrogen'},
     {'name': 'Conky Manager', 'command': 'conky-manager'},
-    {'name': 'LXDM Setting', 'command': 'sudo lxdm-config'}
+    {'name': 'LXDM Setting', 'command': 'sudo lxdm-config'},
+    {'name': 'GPU Test', 'command': 'glmark2'},
+    {'name': 'System Monitor', 'command': 'gnome-system-monitor'},
+    {'name': 'LXDE Menu', 'command': 'menulibre'},
+    {'name': 'HardInfo', 'command': 'hardinfo'},
+
+
+
 ]
 
 # funkcja uruchamiająca wybrany program
@@ -40,11 +47,11 @@ for i in range(num_rows):
         index = i * 2 + j
         if index < len(applications):
             app_label = tk.Label(window, text=applications[index]['name'])
-            app_label.grid(row=i, column=j*2, padx=5, pady=5, sticky='e')
+            app_label.grid(row=i, column=j*2, padx=10, pady=10, sticky='e')
             
             app_button = tk.Button(window, text='Uruchom', 
                                    command=lambda index=index: run_application(index))
-            app_button.grid(row=i, column=j*2+1, padx=5, pady=5)
+            app_button.grid(row=i, column=j*2+1, padx=10, pady=10)
 
 # stworzenie przycisku zamykającego program
 close_button = tk.Button(window, text='Zamknij', command=close_program)
