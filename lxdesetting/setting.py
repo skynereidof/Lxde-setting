@@ -1,69 +1,96 @@
 import tkinter as tk
 import os
 
-# lista aktywatorów i ich nazw
+# List of applications along with their descriptions
 applications = [
-    {'name': 'Arandr', 'command': 'arandr'},
-    {'name': 'Lxsession Default Apps', 'command': 'lxsession-default-apps'},
-    {'name': 'Lxinput', 'command': 'lxinput'},
-    {'name': 'Xfce4 Power Manager', 'command': 'xfce4-power-manager'},
-    {'name': 'Obconf', 'command': 'obconf'},
-    {'name': 'Lxappearance', 'command': 'lxappearance'},
-    {'name': 'Pavucontrol', 'command': 'pavucontrol'},
-    {'name': 'Lxsession Edit', 'command': 'lxsession-edit'},
-    {'name': 'Lxrand', 'command': 'lxrand'},
-    {'name': 'Grub Customizer', 'command': 'grub-customizer'},
-    {'name': 'HP Toolbox', 'command': 'hp-toolbox'},
-    {'name': 'Gparted', 'command': 'gparted'},
-    {'name': 'Nitrogen', 'command': 'nitrogen'},
-    {'name': 'Conky Manager', 'command': 'conky-manager'},
-    {'name': 'LXDM Setting', 'command': 'sudo lxdm-config'},
-    {'name': 'GPU Test', 'command': 'glmark2'},
-    {'name': 'System Monitor', 'command': 'gnome-system-monitor'},
-    {'name': 'LXDE Menu', 'command': 'menulibre'},
-    {'name': 'HardInfo', 'command': 'hardinfo'},
-
-
-
+    {'name': 'Arandr', 'description': 'Monitor Settings Editor', 'command': 'arandr'},
+    {'name': 'Lxsession Default Apps', 'description': 'Default Applications Settings', 'command': 'lxsession-default-apps'},
+    {'name': 'Lxinput', 'description': 'Keyboard and Mouse Settings', 'command': 'lxinput'},
+    {'name': 'Xfce4 Power Manager', 'description': 'Power Management', 'command': 'xfce4-power-manager'},
+    {'name': 'Obconf', 'description': 'Openbox Appearance Configurator', 'command': 'obconf'},
+    {'name': 'Lxappearance', 'description': 'LXDE Appearance Configurator', 'command': 'lxappearance'},
+    {'name': 'Pavucontrol', 'description': 'Sound Settings', 'command': 'pavucontrol'},
+    {'name': 'Lxsession Edit', 'description': 'LXDE Session Configuration Editor', 'command': 'lxsession-edit'},
+    {'name': 'Lxrand', 'description': 'LXDE Resolution Configurator', 'command': 'lxrand'},
+    {'name': 'Grub Customizer', 'description': 'GRUB Editor', 'command': 'grub-customizer'},
+    {'name': 'HP Toolbox', 'description': 'HP Printer Diagnostic Tool', 'command': 'hp-toolbox'},
+    {'name': 'Gparted', 'description': 'Graphical Partition Manager', 'command': 'gparted'},
+    {'name': 'Nitrogen', 'description': 'Wallpaper Settings Manager', 'command': 'nitrogen'},
+    {'name': 'Conky Manager', 'description': 'Conky Widgets Manager', 'command': 'conky-manager'},
+    {'name': 'LXDM Setting', 'description': 'LXDM Login Manager Settings', 'command': 'sudo lxdm-config'},
+    {'name': 'GPU Test', 'description': 'Graphics Card Performance Test', 'command': 'glmark2'},
+    {'name': 'System Monitor', 'description': 'System Resource Monitor', 'command': 'gnome-system-monitor'},
+    {'name': 'LXDE Menu', 'description': 'LXDE Menu Editor', 'command': 'menulibre'},
+    {'name': 'HardInfo', 'description': 'System Analyzer', 'command': 'hardinfo'},
 ]
 
-# funkcja uruchamiająca wybrany program
+# Function to run the selected application
 def run_application(index):
     os.system(applications[index]['command'])
 
-# funkcja zamykająca program
+# Function to close the program
 def close_program():
     window.destroy()
 
-# stworzenie okna
+# Function to display tooltip next to the mouse cursor
+def show_tooltip(event, description):
+    tooltip_label.config(text=description)
+    tooltip_label.place(x=event.x_root + 10, y=event.y_root + 10)
+
+# Function to hide the tooltip
+def hide_tooltip(event):
+    tooltip_label.config(text='')
+    tooltip_label.place_forget()
+
+# Create the window
 window = tk.Tk()
 window.title('LXDM Setting')
 window.configure(bg='white')
 
-# stworzenie etykiet z nazwami programów i przycisków dla każdego aktywatora
-num_rows = (len(applications) + 1) // 2
-for i in range(num_rows):
-    for j in range(2):
-        index = i * 2 + j
-        if index < len(applications):
-            app_label = tk.Label(window, text=applications[index]['name'])
-            app_label.grid(row=i, column=j*2, padx=10, pady=10, sticky='e')
-            
-            app_button = tk.Button(window, text='Uruchom', 
-                                   command=lambda index=index: run_application(index))
-            app_button.grid(row=i, column=j*2+1, padx=10, pady=10)
+# Function to center elements after window resize
+def center_window(event=None):
+    window.update_idletasks()
+    window_width = window.winfo_width()
+    window_height = window.winfo_height()
+    screen_width = window.winfo_screenwidth()
+    screen_height = window.winfo_screenheight()
+    x = (screen_width - window_width) // 2
+    y = (screen_height - window_height) // 2
+    window.geometry('{}x{}+{}+{}'.format(window_width, window_height, x, y))
 
-# stworzenie przycisku zamykającego program
-close_button = tk.Button(window, text='Zamknij', command=close_program)
-close_button.grid(row=num_rows+1, column=0, columnspan=2, pady=10)
+# Call center_window function at the beginning
+center_window()
 
-# przycisk do włączania i wyłączania programu Xcompmgr
-xcompmgr_button = tk.Button(window, text='Włącz Xcompmgr', command=lambda: os.system('xcompmgr -c -f -F -D 5 &'))
-xcompmgr_button.grid(row=num_rows, column=0, padx=5, pady=5)
+# Add resize event
+window.bind('<Configure>', center_window)
 
-kill_xcompmgr_button = tk.Button(window, text='Wyłącz Xcompmgr', command=lambda: os.system('killall xcompmgr'))
-kill_xcompmgr_button.grid(row=num_rows, column=1, padx=5, pady=5)
+# Create labels with application names and buttons for each application
+for index, app_info in enumerate(applications):
+    app_label = tk.Label(window, text=app_info['name'], bg='white')
+    app_label.pack(padx=10, pady=5, anchor='e')
 
-# uruchomienie głównej pętli programu
+    app_button = tk.Button(window, text='Run', 
+                           command=lambda index=index: run_application(index),
+                           relief='raised', bg='lightblue')
+    app_button.pack(padx=10, pady=5, anchor='w')
+    app_button.bind("<Enter>", lambda event, desc=app_info['description']: show_tooltip(event, desc))
+    app_button.bind("<Leave>", hide_tooltip)
+
+# Create a button to close the program
+close_button = tk.Button(window, text='Close', command=close_program, bg='lightblue')
+close_button.pack(pady=10)
+
+# Button to start and stop Xcompmgr program
+xcompmgr_button = tk.Button(window, text='Start Xcompmgr', command=lambda: os.system('xcompmgr -c -f -F -D 5 &'), bg='lightblue')
+xcompmgr_button.pack(padx=5, pady=5)
+
+kill_xcompmgr_button = tk.Button(window, text='Stop Xcompmgr', command=lambda: os.system('killall xcompmgr'), bg='lightblue')
+kill_xcompmgr_button.pack(padx=5, pady=5)
+
+# Label for tooltip
+tooltip_label = tk.Label(window, text='', bg='white')
+tooltip_label.bind("<Leave>", hide_tooltip)
+tooltip_label.place(x=0, y=0)
+
+# Run the main loop of the program
 window.mainloop()
-
